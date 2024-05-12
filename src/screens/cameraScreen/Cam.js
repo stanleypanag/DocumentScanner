@@ -6,23 +6,24 @@ const Cam = () => {
     const [scannedImage, setScannedImage] = useState(null);
 
     const scanDocument = async () => {
-        // start the document scanner
+
+        //**if you click the X button in the scanning session, only documentScanner is exiting and not the whole Cam component */
         const { scannedImages } = await DocumentScanner.scanDocument();
 
-        // check if undefined
         if (scannedImages) {
-            // get back an array with scanned image file paths
+
             if (scannedImages.length > 0) {
-                // set the img src, so we can view the first scanned image
+
                 setScannedImage(scannedImages[0]);
             }
         }
     };
 
     useEffect(() => {
-        // call scanDocument on load
         scanDocument();
-    }, []);
+    }, [scannedImage]);
+
+    console.log("Scanned Image URI:", scannedImage);
 
     return (
         <Image

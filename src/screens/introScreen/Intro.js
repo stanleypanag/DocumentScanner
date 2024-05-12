@@ -7,9 +7,7 @@ import {
     TouchableOpacity,
     ImageBackground,
 } from 'react-native';
-
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
-import Logo from '../../../assets/img/logo.png';
 
 const Intro = () => {
     const navigation = useNavigation(); // Get navigation object
@@ -23,12 +21,7 @@ const Intro = () => {
     };
 
     return (
-        <ImageBackground
-            // source={Background} // Replace with your image path
-            style={styles.container}>
-            <Image source={Logo} style={styles.image} />
-            <Text style={styles.heading1}>Sangguniang Bayan</Text>
-            <Text style={styles.heading2}>Document Scanner</Text>
+        <ImageBackground style={styles.container}>
             <TouchableOpacity
                 style={styles.startButton1}
                 onPress={handleScanButtonPress}>
@@ -37,7 +30,7 @@ const Intro = () => {
             <TouchableOpacity
                 style={styles.startButton2}
                 onPress={handleUploadListButtonPress}>
-                <Text style={styles.startButtonText2}>Go to Upload List</Text>
+                <Text style={styles.startButtonText2}>Staged List</Text>
             </TouchableOpacity>
         </ImageBackground>
     );
@@ -48,48 +41,32 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    },
-    heading1: {
-        fontSize: 20,
-        textTransform: 'uppercase',
-        fontFamily: 'Poppins-Bold',
-        color: 'black',
-        fontWeight: 'bold',
-    },
-    heading2: {
-        fontSize: 15,
-        marginBottom: 100,
-        fontFamily: 'Poppins-Light',
-        color: 'black',
+        backgroundColor: '#fcf6d6',
     },
     startButton1: {
-        backgroundColor: 'blue',
-        paddingVertical: 12,
-        paddingHorizontal: 55,
-        borderRadius: 30,
+        backgroundColor: '#2e8162',
+        paddingVertical: 50,
+        paddingHorizontal: 50,
         marginBottom: 10,
+        borderRadius: 10,
     },
     startButton2: {
-        backgroundColor: 'black',
-        paddingVertical: 12,
-        paddingHorizontal: 55,
-        borderRadius: 30,
+        backgroundColor: '#003C43',
+        paddingVertical: 50,
+        paddingHorizontal: 70,
+        borderRadius: 10,
     },
     startButtonText1: {
-        color: '#ffffff',
+        color: '#fcf6d6',
         fontSize: 13,
-        fontWeight: 'bold',
+        fontFamily: 'Poppins-Bold',
         borderRadius: 10,
     },
     startButtonText2: {
-        color: '#ffffff',
+        color: '#fcf6d6',
         fontSize: 13,
-        fontWeight: 'bold',
+        fontFamily: 'Poppins-Bold',
         borderRadius: 10,
-    },
-    image: {
-        marginBottom: 50,
     },
 });
 

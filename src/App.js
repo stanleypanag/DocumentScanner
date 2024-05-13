@@ -1,14 +1,14 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Intro, Cam, RTU, Auth } from './screens';
+import { Intro, Cam, RTU, Auth, FieldReviewScreen } from './screens';
 
 const Stack = createStackNavigator();
 
 const App = () => {
 
   //* set to TRUE to be authenticated
-  const isAuthenticated = false;
+  const isAuthenticated = true;
 
   return (
     <NavigationContainer>
@@ -23,6 +23,11 @@ const App = () => {
             <Stack.Screen
               name="CameraScreen"
               component={Cam}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="FieldReviewScreen"
+              component={FieldReviewScreen}
               options={{ headerShown: false }}
             />
             <Stack.Screen

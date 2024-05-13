@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, ImageBackground, View } from 'react-native';
-import Background from '../../../assets/img/background1.jpg';
 import { OrdinanceTemplate, ResolutionTemplate } from './template';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 const RTU = () => {
-    const [searchText, setSearchText] = useState(''); // State to store search term
+    const [searchText, setSearchText] = useState(''); //* State to store search term
 
     const handleSearchChange = (text) => {
         setSearchText(text);
-        // Implement search functionality here, e.g., filtering data based on text
+        //* Implement search functionality here, e.g., filtering data based on text
     };
 
     return (
-        <ImageBackground style={styles.container} source={Background}>
+        <ImageBackground style={styles.container}>
             <View style={styles.searchBarContainer}>
                 <TextInput
                     style={styles.searchBarInput}

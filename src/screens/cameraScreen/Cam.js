@@ -1,31 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Image } from 'react-native';
+import { Image, Button } from 'react-native';
 import DocumentScanner from 'react-native-document-scanner-plugin';
+import { useNavigation } from '@react-navigation/native'; // Assuming React Navigation
 
 const Cam = () => {
+    const navigation = useNavigation();
     const [scannedImage, setScannedImage] = useState(null);
 
     const scanDocument = async () => {
+        const { status, scannedImages } = await DocumentScanner.scanDocument();
 
-        //**if you click the X button in the scanning session, only documentScanner is exiting and not the whole Cam component */
-        const { scannedImages } = await DocumentScanner.scanDocument();
-
-        if (scannedImages) {
-
-            if (scannedImages.length > 0) {
-
-                setScannedImage(scannedImages[0]);
-            }
+        if (status === 'success' && scannedImages && scannedImages.length > 0) {
+            setScannedImage(scannedImages[0]);
+        } else if (status === 'cancel') {
+            navigation.goBack();
         }
     };
 
     useEffect(() => {
         scanDocument();
-    }, [scannedImage]);
-
-    console.log("Scanned Image URI:", scannedImage);
+    }, []);
 
     return (
+
         <Image
             style={{ width: '100%', height: '100%' }}
             source={{ uri: scannedImage }}

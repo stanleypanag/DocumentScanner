@@ -22,7 +22,6 @@ const Cam = () => {
     }, []);
 
     return (
-
         <Image
             style={{ width: '100%', height: '100%' }}
             source={{ uri: scannedImage }}

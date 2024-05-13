@@ -24,7 +24,7 @@ const Intro = () => {
 
             <View>
                 <Text style={styles.userText1}>User:</Text>
-                <Text style={styles.userText2}>Stanley</Text>
+                <Text style={styles.userText2}>stanley</Text>
             </View>
 
             <TouchableOpacity
@@ -57,13 +57,13 @@ const styles = StyleSheet.create({
         paddingVertical: 50,
         paddingHorizontal: 15,
         marginRight: 10,
-        borderRadius: 70,
+        borderRadius: 10,
     },
     startButton2: {
         backgroundColor: '#003C43',
         paddingVertical: 50,
         paddingHorizontal: 30,
-        borderRadius: 70,
+        borderRadius: 10,
     },
     startButtonText1: {
         color: '#fcf6d6',

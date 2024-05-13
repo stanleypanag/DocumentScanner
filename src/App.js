@@ -8,7 +8,7 @@ const Stack = createStackNavigator();
 const App = () => {
 
   //* set to TRUE to be authenticated
-  const isAuthenticated = true;
+  const isAuthenticated = false;
 
   return (
     <NavigationContainer>

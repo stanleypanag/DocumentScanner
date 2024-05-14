@@ -1,44 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     StyleSheet,
     Text,
     View,
     TouchableOpacity,
     ImageBackground,
+    Image
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { useNavigation } from '@react-navigation/native';
+import Profile from '../../../assets/img/profile2.png';
+import ScannerImg from '../../../assets/img/scanner2.png';
 
 const Intro = () => {
-    const navigation = useNavigation(); // Get navigation object
+    const navigation = useNavigation();
+    const [dropdownVisible, setDropdownVisible] = useState(false);
 
     const handleScanButtonPress = () => {
-        navigation.navigate('CameraScreen'); // Navigate to the Camera screen
+        navigation.navigate('CameraScreen');
     };
 
-    const handleUploadListButtonPress = () => {
-        navigation.navigate('RTUScreen'); // Navigate to the RTU screen
+    const toggleDropdown = () => {
+        setDropdownVisible(!dropdownVisible);
+    };
+
+    const handleLogout = () => {
+        //* Handle logout logic here
+        console.log('Logout pressed');
     };
 
     return (
         <ImageBackground style={styles.container}>
-
-            <View>
-                <Text style={styles.userText1}>User:</Text>
-                <Text style={styles.userText2}>stanley</Text>
+            <View style={styles.userTextContainer}>
+                <TouchableOpacity style={styles.profileButton} onPress={toggleDropdown}>
+                    <Image source={Profile} />
+                </TouchableOpacity>
+                <Text style={styles.userText1}>USER:</Text>
+                <Text style={styles.userText2}>stanleypanag18</Text>
+                {dropdownVisible && (
+                    <View style={styles.dropdown}>
+                        <TouchableOpacity onPress={handleLogout}>
+                            <Text style={styles.dropdownText}>Logout</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
             </View>
 
             <TouchableOpacity
-                style={styles.startButton1}
+                style={styles.scanDocumentContainer}
                 onPress={handleScanButtonPress}>
-                <Text style={styles.startButtonText1}>Scan Document</Text>
+                <Image style={styles.scannerImg} source={ScannerImg} />
+                <Text style={{ color: '#fcf6d6', fontSize: 11, fontFamily: 'Poppins-Light' }}>Scan Document</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.startButton2}
-                onPress={handleUploadListButtonPress}>
-                <Text style={styles.startButtonText2}>Staged List</Text>
-            </TouchableOpacity>
-
-            <Text style={styles.userText3}>Logout</Text>
 
         </ImageBackground>
     );
@@ -50,60 +62,65 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#fcf6d6',
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
-    startButton1: {
-        backgroundColor: '#2e8162',
-        paddingVertical: 50,
-        paddingHorizontal: 15,
-        marginRight: 10,
-        borderRadius: 10,
-    },
-    startButton2: {
+    scanDocumentContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 200,
+        height: 200,
         backgroundColor: '#003C43',
-        paddingVertical: 50,
-        paddingHorizontal: 30,
-        borderRadius: 10,
+        borderRadius: 60,
+    },
+    userTextContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        position: 'absolute',
+        backgroundColor: '#003C43',
+        borderRadius: 5,
+        width: '95%',
+        height: '8%',
+        top: 10,
+    },
+    scannerImg: {
+        width: 100,
+        height: 100,
     },
     startButtonText1: {
         color: '#fcf6d6',
         fontSize: 10,
         fontFamily: 'Poppins-Bold',
     },
-    startButtonText2: {
-        color: '#fcf6d6',
-        fontSize: 10,
-        fontFamily: 'Poppins-Bold',
+    profileButton: {
+        marginRight: 10,
+        marginLeft: 10,
     },
     userText1: {
-        color: '#2e8162',
-        position: 'absolute',
-        bottom: 150,
-        left: 20,
+        color: '#fcf6d6',
         fontFamily: 'Poppins-Bold',
-        fontSize: 20,
-        textTransform: 'uppercase',
-
+        fontSize: 13,
+        marginRight: 5
     },
     userText2: {
-        color: '#003C43',
-        position: 'absolute',
-        bottom: 120,
-        left: 20,
-        fontFamily: 'Poppins-Bold',
-        fontSize: 25,
-        fontStyle: 'italic'
+        color: '#fcf6d6',
+        fontFamily: 'Poppins-Light',
+        fontSize: 13,
     },
-    userText3: {
-        color: '#2e8162',
+    dropdown: {
         position: 'absolute',
-        bottom: 120,
-        left: 150,
-        fontFamily: 'Poppins-Medium',
+        top: 75,
+        left: 0,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        padding: 10,
+        elevation: 5,
+        shadowColor: '#000',
+    },
+    dropdownText: {
+        color: '#2e8162',
         fontSize: 15,
-        textDecorationLine: 'underline'
-
-    }
+        paddingVertical: 5,
+    },
 });
 
 export default Intro;

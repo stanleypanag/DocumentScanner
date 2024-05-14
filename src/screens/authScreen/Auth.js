@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Alert, StyleSheet, Image, Text } from 'react-native';
+import { View, TextInput, Button, Alert, StyleSheet, Image, Text, ImageBackground } from 'react-native';
 import LogoApp from '../../../assets/img/logoApp.png';
 import LogoCompany from '../../../assets/img/logoCompany.png';
 
@@ -18,7 +18,7 @@ const Auth = ({ navigation }) => {
     };
 
     return (
-        <View style={styles.container}>
+        <ImageBackground style={styles.container}>
             <Image source={LogoApp} style={styles.imageApp} />
             <Text style={styles.headingApp}>Document Scanner!</Text>
             <TextInput
@@ -38,7 +38,7 @@ const Auth = ({ navigation }) => {
             <Text style={styles.headingCompany}>© 2024 Sangguniang Bayan ng Naic. All rights reserved.</Text>
 
 
-        </View >
+        </ ImageBackground>
     );
 };
 

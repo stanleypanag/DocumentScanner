@@ -1,13 +1,12 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Intro, Cam, RTU, Auth, FieldReviewScreen } from './screens';
+import { Intro, Cam, Auth } from './screens';
 
 const Stack = createStackNavigator();
 
 const App = () => {
 
-  //* set to TRUE to be authenticated
   const isAuthenticated = true;
 
   return (
@@ -23,16 +22,6 @@ const App = () => {
             <Stack.Screen
               name="CameraScreen"
               component={Cam}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="FieldReviewScreen"
-              component={FieldReviewScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="RTUScreen"
-              component={RTU}
               options={{ headerShown: false }}
             />
           </>

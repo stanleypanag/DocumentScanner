@@ -8,6 +8,7 @@ import {
     Image
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { supabase } from '../../lib/supabase';
 import Profile from '../../../assets/img/profile2.png';
 import ScannerImg from '../../../assets/img/scanner2.png';
 
@@ -23,9 +24,13 @@ const Intro = () => {
         setDropdownVisible(!dropdownVisible);
     };
 
-    const handleLogout = () => {
-        //* Handle logout logic here
-        console.log('Logout pressed');
+    const handleLogout = async () => {
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+            console.error('Error signing out:', error);
+        } else {
+            navigation.navigate('AuthScreen');
+        }
     };
 
     return (
@@ -35,7 +40,7 @@ const Intro = () => {
                     <Image source={Profile} />
                 </TouchableOpacity>
                 <Text style={styles.userText1}>USER:</Text>
-                <Text style={styles.userText2}>stanleypanag18</Text>
+                <Text style={styles.userText2}>username</Text>
                 {dropdownVisible && (
                     <View style={styles.dropdown}>
                         <TouchableOpacity onPress={handleLogout}>

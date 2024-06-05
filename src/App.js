@@ -8,21 +8,45 @@ const Stack = createStackNavigator();
 
 const App = () => {
   const [session, setSession] = useState(null);
+  const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
+      if (session) {
+        fetchUserRole(session.user.email);
+      }
     });
 
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-    });;
+      if (session) {
+        fetchUserRole(session.user.email);
+      }
+    });
   }, []);
+
+  const fetchUserRole = async (email) => {
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .select('is_admin')
+        .eq('email', email);
+
+      if (error) {
+        console.log('Error fetching user role:', error);
+      } else {
+        setUserRole(data[0].is_admin ? 'admin' : 'user');
+      }
+    } catch (error) {
+      console.log('Error fetching user role:', error);
+    }
+  };
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {session ? (
+        {session && userRole === 'admin' ? (
           <>
             <Stack.Screen
               name="IntroScreen"

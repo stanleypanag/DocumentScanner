@@ -133,6 +133,6 @@ const styles = StyleSheet.create({
     buttonContainer: {
         width: 300,
         backgroundColor: "#003C43",
-        marginBottom: 80,
+        marginBottom: 50,
     }
 });

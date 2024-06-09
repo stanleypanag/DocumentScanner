@@ -5,10 +5,13 @@ import { supabase } from '../../lib/supabase';
 import LogoApp from '../../../assets/img/logoApp.png';
 import LogoCompany from '../../../assets/img/logoCompany.png';
 
+import AnimationLogin from '../animation/AnimationLogin';
+
 
 const Auth = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleLogin = async () => {
         if (email.trim() === '') {
@@ -16,12 +19,15 @@ const Auth = ({ navigation }) => {
             return;
         }
 
+        setIsLoading(true); // Set loading state to true before login call
+
         try {
             const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
 
             if (signInError) {
                 console.log('Sign-in error:', signInError);
                 Alert.alert('Error', signInError.message || 'An unexpected error occurred during sign in.');
+                setIsLoading(false); // Set loading state to false after error
                 return;
             }
 
@@ -36,63 +42,71 @@ const Auth = ({ navigation }) => {
             if (userError) {
                 console.log('User fetch error:', userError);
                 Alert.alert('Error', userError.message || 'An unexpected error occurred while fetching user data.');
+                setIsLoading(false); // Set loading state to false after error
                 return;
             }
 
             if (!userData) {
                 console.log('No user data found for email:', email);
                 Alert.alert('Error', 'No user found with the provided email.');
+                setIsLoading(false); // Set loading state to false after error
                 return;
             }
 
-            let userRole;
-            if (userData[0].is_admin === true) {
-                userRole = 'admin';
-            }
 
-            if (userRole === 'admin') {
-                navigation.navigate('IntroScreen');
+            if (userData[0].is_admin === true) {
+                navigation.navigate("IntroScreen");
             } else {
                 Alert.alert('Error', 'You are not authorized to access this app.');
             }
+
         } catch (error) {
             console.error('Error:', error);
             Alert.alert('Error', error.message || 'An unexpected error occurred. Please try again later.');
+            setIsLoading(false);
+        } finally {
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            setIsLoading(false);
         }
     };
-    return (
-        <ImageBackground style={styles.container}>
-            <Image source={LogoApp} style={styles.imageApp} />
-            <Text style={styles.headingApp}>Document Scanner!</Text>
-            <TextInput
-                style={styles.textInput}
-                placeholder="Enter your email"
-                onChangeText={setEmail}
-                value={email}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                placeholderTextColor="#003C43"
-            />
-            <TextInput
-                style={styles.textInput}
-                placeholder="Enter your Password"
-                onChangeText={setPassword}
-                value={password}
-                keyboardType="password"
-                autoCapitalize="none"
-                placeholderTextColor="#003C43"
-            />
-            <View style={styles.buttonContainer}>
-                <Button color="#003C43" title="Login" onPress={handleLogin} />
-            </View>
 
-            <Image source={LogoCompany} style={styles.imageCompany} />
-            <Text style={styles.headingCompany}>© 2024 Sangguniang Bayan ng Naic. All rights reserved.</Text>
-        </ImageBackground>
+    return (
+        <>
+            <ImageBackground style={styles.container}>
+                <Image source={LogoApp} style={styles.imageApp} />
+                <Text style={styles.headingApp}>Document Scanner!</Text>
+                <TextInput
+                    style={styles.textInput}
+                    placeholder="Enter your email"
+                    onChangeText={setEmail}
+                    value={email}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    placeholderTextColor="#003C43"
+                />
+                <TextInput
+                    style={styles.textInput}
+                    placeholder="Enter your Password"
+                    onChangeText={setPassword}
+                    value={password}
+                    keyboardType="password"
+                    autoCapitalize="none"
+                    placeholderTextColor="#003C43"
+                />
+                <View style={styles.buttonContainer}>
+                    <Button color="#003C43" title="Login" onPress={handleLogin} />
+                </View>
+
+                <Image source={LogoCompany} style={styles.imageCompany} />
+                <Text style={styles.headingCompany}>© 2024 Sangguniang Bayan ng Naic. All rights reserved.</Text>
+            </ImageBackground>
+            {isLoading && <AnimationLogin />}
+        </>
     );
 };
 
 export default Auth;
+
 
 const styles = StyleSheet.create({
     container: {

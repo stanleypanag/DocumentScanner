@@ -3,60 +3,111 @@ import DocumentScanner from 'react-native-document-scanner-plugin';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
+import OCRTextEditor from './OCRTextEditor.js';
+
+// const SCAN_API_URL = 'http://192.168.1.18:5000/api/process-document'; // Gab's IP
+const SCAN_API_URL = 'http://192.168.1.5:5000/api/process-document'; // Stanley's IP
+
+const axiosInstance = axios.create({
+    maxBodyLength: Infinity,
+    maxContentLength: Infinity, // Set a limit of 10 MB for request body size
+});
+
 const Cam = () => {
     const navigation = useNavigation();
 
-    const scanDoc = async () => {
-        const { status, scannedImages: imageURIs } = await DocumentScanner.scanDocument();
-
-        try {
-            if (status === 'cancel' || !imageURIs || imageURIs.length === 0) {
-                navigation.goBack();
-            } else {
-                const base64Images = await Promise.all(
-                    imageURIs.map(async (uri) => {
-                        const response = await fetch(uri);
-                        const blob = await response.blob();
-                        const base64 = await new Promise((resolve) => {
-                            const reader = new FileReader();
-                            reader.onload = () => resolve(reader.result.split(',')[1]);
-                            reader.readAsDataURL(blob);
-                        });
-                        return base64;
-                    })
-                );
-
-                // Create a new FormData object
-                const formData = new FormData();
-
-                // Add the base64 encoded images to the FormData object
-                for (let i = 0; i < base64Images.length; i++) {
-                    const pageName = `page${i + 1}`;
-                    formData.append(pageName, base64Images[i]);
-                }
-
-                // Send the FormData object to the backend
-                axios.post(URL + '/base64reciever', formData)
-                    .then(res => {
-                        if (res.ok) {
-                            res.json().then(data => console.log(data))
-                        } else {
-                            console.log(res)
-                            alert('Error processing image')
-                        }
-                    })
-            }
-        } catch (error) {
-            console.error("ERROR:   ", error)
-        }
-    }
-
+    const [responseFromServer, setResponseFromServer] = useState({});
 
     useEffect(() => {
-        scanDoc();
+        const scanDocumentAsync = async () => {
+            try {
+                await scanDocument();
+            } catch (error) {
+                console.error('Error in scanDocumentAsync:', error);
+            }
+        };
+        scanDocumentAsync();
     }, []);
 
-    return null; // Since you don't need to render anything, return null
+    const handleScanError = (error) => {
+        console.error('Error while scanning:', error);
+    };
+
+    const handleScanSuccess = async (imageURIs) => {
+        try {
+            if (!imageURIs || imageURIs.length === 0) {
+                console.log('Scan cancelled or no images found');
+                navigation.goBack();
+                return;
+            }
+
+            const base64Images = await Promise.all(
+                imageURIs.map(async (uri) => {
+                    const response = await fetch(uri);
+                    const blob = await response.blob();
+                    const base64 = await new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result.split(',')[1]);
+                        reader.readAsDataURL(blob);
+                    });
+                    return base64;
+                })
+            );
+            await sendBase64Images(base64Images);
+        } catch (error) {
+            console.log('Error While Converting to base64');
+        }
+    };
+
+    const scanDocument = async () => {
+        console.log('Scanning document...');
+        try {
+            const { status, scannedImages: imageURIs } = await DocumentScanner.scanDocument();
+            console.log('Scan status:', status);
+            console.log('Scanned images:', imageURIs);
+
+            if (status === 'cancel') {
+                handleScanSuccess(imageURIs); // Handle success even for cancelled scan (no images)
+            } else {
+                handleScanSuccess(imageURIs);
+            }
+        } catch (error) {
+            handleScanError(error);
+        }
+    };
+
+    const sendBase64Images = async (base64Images) => {
+
+        try {
+            const formData = new FormData();
+            base64Images.forEach((image, index) => {
+                const pageName = `page${index + 1}`;
+                formData.append(pageName, image);
+            });
+
+            const response = await axiosInstance.post(SCAN_API_URL, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            setResponseFromServer(response.data);
+
+            console.log('Server response status:', response.status);
+
+            if (response.status === 200) {
+                console.log('Response data:', response.data);
+            } else {
+                throw new Error(`Error processing images: ${response.status} - ${response.statusText}`);
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    return (
+        <OCRTextEditor responseFromServer={responseFromServer} />
+    );
 };
 
 export default Cam;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     StyleSheet,
     Text,
@@ -15,6 +15,16 @@ import ScannerImg from '../../../assets/img/scanner2.png';
 const Intro = () => {
     const navigation = useNavigation();
     const [dropdownVisible, setDropdownVisible] = useState(false);
+    const [email, setEmail] = useState('');
+
+
+    useEffect(() => {
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session) {
+                setEmail(session.user.email);
+            }
+        });
+    }, []);
 
     const handleScanButtonPress = () => {
         navigation.navigate('CameraScreen');
@@ -40,7 +50,7 @@ const Intro = () => {
                     <Image source={Profile} />
                 </TouchableOpacity>
                 <Text style={styles.userText1}>USER:</Text>
-                <Text style={styles.userText2}>username</Text>
+                <Text style={styles.userText2}>{email}</Text>
                 {dropdownVisible && (
                     <View style={styles.dropdown}>
                         <TouchableOpacity onPress={handleLogout}>

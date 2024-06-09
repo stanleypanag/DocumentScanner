@@ -2,32 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, Button, Modal } from 'react-native';
 import axios from 'axios';
 import AnimationRequest from '../animation/AnimationRequest';
-import AnimationProgress from '../animation/AnimationProgress';
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
 
-const SCAN_API_URL = 'http://192.168.1.5:5000/api/confirm-document'; // Stanley's IP
+const SCAN_API_URL = 'http://192.168.1.18:5000/api/confirm-document';
 
 const OCRTextEditor = ({ responseFromServer }) => {
     const navigation = useNavigation();
     const [docType, setDocType] = useState('');
     const [docNumber, setDocNumber] = useState('');
     const [docTitle, setDocTitle] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    const [progress, setProgress] = useState(0);
 
     useEffect(() => {
         if (responseFromServer && responseFromServer.data && responseFromServer.data.docu_type) {
             const { data } = responseFromServer;
             setDocType(data.docu_type || '');
-            setDocNumber(data.docu_number.toString() || '');
+            setDocNumber(data.docu_number || '');
             setDocTitle(data.docu_title || '');
         }
     }, [responseFromServer]);
 
     const handleSubmit = async () => {
-        setIsLoading(true);
         setShowModal(true);
 
         try {
@@ -37,30 +33,20 @@ const OCRTextEditor = ({ responseFromServer }) => {
                 doc_title: docTitle,
             };
 
-            const response = await axios.post(SCAN_API_URL, requestBody, {
-                onUploadProgress: ({ loaded, total }) => {
-                    const progressValue = loaded / total;
-                    setProgress(progressValue);
-                },
-            });
+            console.log('Request body:', requestBody);
+
+            const response = await axios.post(SCAN_API_URL, requestBody);
 
             console.log('Response from server:', response.data);
 
             setTimeout(() => {
-                setShowModal(false);
-                setIsLoading(false);
+                navigation.navigate('IntroScreen');
             }, 3000);
 
         } catch (error) {
             console.error('Error sending data to server:', error);
-            setIsLoading(false);
             setShowModal(false);
         }
-    };
-
-    const handleModalClose = () => {
-        setShowModal(false);
-        navigation.goBack();
     };
 
     return (
@@ -69,7 +55,7 @@ const OCRTextEditor = ({ responseFromServer }) => {
                 <Text style={styles.mainLabel}>Edit Extracted Text</Text>
             </View>
 
-            <View style={{ padding: 20, flex: 1, justifyContent: 'center' }}>
+            <View style={{ padding: 50, flex: 1, justifyContent: 'center' }}>
                 <Text style={styles.label}>Document Type:</Text>
                 <TextInput
                     style={styles.textInput}
@@ -77,6 +63,7 @@ const OCRTextEditor = ({ responseFromServer }) => {
                     editable
                     value={docType}
                     onChangeText={setDocType}
+                    placeholder="Loading..."
                 />
 
                 <Text style={styles.label}>Document Number:</Text>
@@ -96,19 +83,15 @@ const OCRTextEditor = ({ responseFromServer }) => {
                     editable
                     value={docTitle}
                     onChangeText={setDocTitle}
+                    placeholder="Loading..."
                 />
 
                 <Button color="#003C43" title="Submit" onPress={handleSubmit} />
             </View>
-            <Modal visible={showModal} animationType="fade" onRequestClose={handleModalClose}>
+            <Modal visible={showModal} animationType="fade">
                 <View style={styles.modalContainer}>
-                    {isLoading ? (
-                        <AnimationProgress progress={progress} />
-                    ) : (
-                        <AnimationRequest />
-                    )}
+                    <AnimationRequest />
                 </View>
-                <Button color="#003C43" title="Close" onPress={handleModalClose} />
             </Modal>
         </View>
     );
@@ -150,20 +133,21 @@ const styles = StyleSheet.create({
         padding: 10,
         marginBottom: 15,
         textAlignVertical: 'top',
-        color: 'black',
+        color: '#003C43',
     },
     textInputTitle: {
         height: 200,
         borderColor: 'gray',
+        borderColor: '#003C43',
         backgroundColor: 'rgba(0,0,0,0.3)',
         borderWidth: 1,
         padding: 10,
         marginBottom: 15,
         textAlignVertical: 'top',
-        color: 'black',
+        color: '#003C43',
     },
     modalContainer: {
         flex: 1,
-        justifyContent: 'center'
+        justifyContent: 'center',
     }
 });

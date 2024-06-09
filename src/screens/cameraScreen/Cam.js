@@ -5,8 +5,7 @@ import axios from 'axios';
 
 import OCRTextEditor from './OCRTextEditor.js';
 
-// const SCAN_API_URL = 'http://192.168.1.18:5000/api/process-document'; // Gab's IP
-const SCAN_API_URL = 'http://192.168.1.5:5000/api/process-document'; // Stanley's IP
+const SCAN_API_URL = 'http://192.168.1.18:5000/api/process-document';
 
 const axiosInstance = axios.create({
     maxBodyLength: Infinity,

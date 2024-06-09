@@ -5,7 +5,7 @@ import LottieView from 'lottie-react-native'
 const AnimationRequest = () => {
     return (
         <View style={[StyleSheet.absoluteFillObject, style.container]}>
-            <LottieView source={require('../../../assets/lottie/Animation - 1717792931634.json')} style={{
+            <LottieView source={require('../../../assets/lottie/Animation - 1717951925397.json')} style={{
                 width: 200,
                 height: 200,
             }} autoPlay loop={false} />

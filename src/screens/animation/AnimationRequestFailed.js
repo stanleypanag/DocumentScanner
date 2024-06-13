@@ -2,14 +2,14 @@ import React from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import LottieView from 'lottie-react-native'
 
-const AnimationRequest = () => {
+const AnimationRequestFailed = () => {
     return (
         <View style={[StyleSheet.absoluteFillObject, style.container]}>
-            <LottieView source={require('../../../assets/lottie/Animation - 1717951925397.json')} style={{
+            <LottieView source={require('../../../assets/lottie/Animation - 1718021831210.json')} style={{
                 width: 200,
                 height: 200,
             }} autoPlay loop={false} />
-            <Text style={style.textAlert}>Success</Text>
+            <Text style={style.textAlert}>Upload Failed!</Text>
         </View>
     );
 };
@@ -23,10 +23,10 @@ const style = StyleSheet.create({
     },
     textAlert: {
         fontFamily: 'Poppins-Bold',
-        color: '#d5a300',
+        color: '#e25b5b',
         fontSize: 30,
     }
 })
 
 
-export default AnimationRequest
+export default AnimationRequestFailed;

@@ -2,14 +2,16 @@ import { useEffect, useState } from 'react';
 import DocumentScanner from 'react-native-document-scanner-plugin';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import { Alert } from 'react-native';
 
 import OCRTextEditor from './OCRTextEditor.js';
 
+// const SCAN_API_URL = 'http://192.168.1.18:5000/api/process-document';
 const SCAN_API_URL = 'http://192.168.1.18:5000/api/process-document';
 
 const axiosInstance = axios.create({
     maxBodyLength: Infinity,
-    maxContentLength: Infinity, // Set a limit of 10 MB for request body size
+    maxContentLength: Infinity,
 });
 
 const Cam = () => {
@@ -100,7 +102,7 @@ const Cam = () => {
             }
 
         } catch (error) {
-            console.error(error);
+            Alert.alert(error) // Here I will handle error and Notif the user for the error
         }
     };
 

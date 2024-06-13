@@ -2,14 +2,14 @@ import React from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import LottieView from 'lottie-react-native'
 
-const AnimationRequest = () => {
+const AnimationNotAdmin = () => {
     return (
         <View style={[StyleSheet.absoluteFillObject, style.container]}>
-            <LottieView source={require('../../../assets/lottie/Animation - 1717951925397.json')} style={{
+            <LottieView source={require('../../../assets/lottie/Animation - 1718021831210.json')} style={{
                 width: 200,
                 height: 200,
             }} autoPlay loop={false} />
-            <Text style={style.textAlert}>Success</Text>
+            <Text style={style.textAlert}>Not Authorized!</Text>
         </View>
     );
 };
@@ -18,15 +18,15 @@ const style = StyleSheet.create({
     container: {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fcf6d6',
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
         zIndex: 1,
     },
     textAlert: {
         fontFamily: 'Poppins-Bold',
-        color: '#d5a300',
+        color: '#e25b5b',
         fontSize: 30,
     }
 })
 
 
-export default AnimationRequest
+export default AnimationNotAdmin;

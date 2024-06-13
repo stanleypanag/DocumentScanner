@@ -5,18 +5,21 @@ import {
     View,
     TouchableOpacity,
     ImageBackground,
-    Image
+    Image,
+    Modal,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { supabase } from '../../lib/supabase';
 import Profile from '../../../assets/img/profile2.png';
 import ScannerImg from '../../../assets/img/scanner2.png';
+import background from '../../../assets/img/background5.jpg'
+import AnimationLogout from '../animation/AnimationLogout';
 
 const Intro = () => {
     const navigation = useNavigation();
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [email, setEmail] = useState('');
-
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
@@ -35,16 +38,27 @@ const Intro = () => {
     };
 
     const handleLogout = async () => {
+        setIsLoggingOut(true);
+
         const { error } = await supabase.auth.signOut();
         if (error) {
             console.error('Error signing out:', error);
+            setIsLoggingOut(false);
         } else {
             navigation.navigate('AuthScreen');
         }
     };
 
     return (
-        <ImageBackground style={styles.container}>
+        <ImageBackground source={background} style={styles.container}>
+            <Modal
+                visible={isLoggingOut}
+                transparent={true}
+                animationType="fade"
+            >
+                <AnimationLogout onFinish={() => setIsLoggingOut(false)} />
+            </Modal>
+
             <View style={styles.userTextContainer}>
                 <TouchableOpacity style={styles.profileButton} onPress={toggleDropdown}>
                     <Image source={Profile} />

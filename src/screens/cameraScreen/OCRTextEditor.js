@@ -6,9 +6,10 @@ import AnimationRequestFailed from '../animation/AnimationRequestFailed';
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
 import background from '../../../assets/img/background5.jpg'
+import { REACT_NATIVE_LOCAL_IP } from '@env'
 
-// const SCAN_API_URL = 'http://192.168.1.18:5000/api/confirm-document';
-const SCAN_API_URL = 'http://192.168.1.18:5000/api/confirm-document';
+
+const SCAN_API_URL = `http://192.168.91.29:5000/api/confirm-document`;
 
 const OCRTextEditor = ({ responseFromServer }) => {
     const navigation = useNavigation();

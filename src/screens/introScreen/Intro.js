@@ -33,6 +33,10 @@ const Intro = () => {
         navigation.navigate('CameraScreen');
     };
 
+    const handleButtonToGuide = () => {
+        navigation.navigate('GuideScreen');
+    };
+
     const toggleDropdown = () => {
         setDropdownVisible(!dropdownVisible);
     };
@@ -69,6 +73,9 @@ const Intro = () => {
                     <View style={styles.dropdown}>
                         <TouchableOpacity onPress={handleLogout}>
                             <Text style={styles.dropdownText}>Logout</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={handleButtonToGuide}>
+                            <Text style={styles.dropdownText}>User Guide</Text>
                         </TouchableOpacity>
                     </View>
                 )}

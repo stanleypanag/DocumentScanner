@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { supabase } from './lib/supabase';
-import { Intro, Cam, Auth } from './screens';
+import { Intro, Cam, Auth, GuideScreen } from './screens';
 
 const Stack = createStackNavigator();
 
@@ -56,6 +56,11 @@ const App = () => {
             <Stack.Screen
               name="CameraScreen"
               component={Cam}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="GuideScreen"
+              component={GuideScreen}
               options={{ headerShown: false }}
             />
           </>

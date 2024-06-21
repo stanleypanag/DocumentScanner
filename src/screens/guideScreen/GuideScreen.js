@@ -21,7 +21,7 @@ const UserGuide = () => {
             <ScrollView>
                 <View style={styles.contentContainer}>
                     <View style={styles.section}>
-                        <Text style={styles.sectionTitle}>Click Scanner Button</Text>
+                        <Text style={styles.sectionTitle}>Click Scan Document Button</Text>
                         <Image source={ScannerButton} style={styles.image} />
                     </View>
                     <View style={styles.section}>
@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
         color: 'white',
         backgroundColor: 'brown',
         padding: 10,
-        borderRadius: 20,
         textAlign: 'center'
     },
     image: {

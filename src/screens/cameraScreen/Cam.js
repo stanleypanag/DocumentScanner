@@ -4,8 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { Alert } from 'react-native';
 import OCRTextEditor from './OCRTextEditor.js';
-import { REACT_NATIVE_LOCAL_IP } from '@env'
 
+// TO BE CHANGED AS DYNAMIC DOMAIN
 const SCAN_API_URL = `http://192.168.91.29:5000/api/process-document`;
 
 const axiosInstance = axios.create({

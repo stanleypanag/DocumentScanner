@@ -6,7 +6,7 @@ import { Alert } from 'react-native';
 import OCRTextEditor from './OCRTextEditor.js';
 
 // TO BE CHANGED AS DYNAMIC DOMAIN
-const SCAN_API_URL = `http://192.168.91.29:5000/api/process-document`;
+const SCAN_API_URL = `https://sbnaic-server.onrender.com/api/process-document`;
 
 const axiosInstance = axios.create({
     maxBodyLength: Infinity,

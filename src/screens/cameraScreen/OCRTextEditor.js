@@ -8,7 +8,7 @@ import _ from 'lodash';
 import background from '../../../assets/img/background5.jpg'
 
 // TO BE CHANGED AS DYNAMIC DOMAIN
-const SCAN_API_URL = `http://192.168.91.29:5000/api/confirm-document`;
+const SCAN_API_URL = `https://sbnaic-server.onrender.com/api/confirm-document`;
 
 const OCRTextEditor = ({ responseFromServer }) => {
     const navigation = useNavigation();
